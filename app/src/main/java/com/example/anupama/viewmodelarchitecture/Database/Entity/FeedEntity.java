@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class FeedEntity {
 
 
-    FeedEntity(){
+    public FeedEntity(){
 
     }
 

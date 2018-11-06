@@ -33,9 +33,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     public void onBindViewHolder(@NonNull MainViewHolder mainViewHolder, int i) {
 
         mainViewHolder.textView1.setText(mFeedList.get(i).getMomentId());
-        mainViewHolder.textView2.setText(mFeedList.get(i).getUserfullname());
+        //mainViewHolder.textView2.setText(mFeedList.get(i).getUserfullname());
         mainViewHolder.textView3.setText(mFeedList.get(i).getUsername());
-        mainViewHolder.textView4.setText(mFeedList.get(i).getMomentUrl());
+        //mainViewHolder.textView4.setText(mFeedList.get(i).getMomentUrl());
 
     }
 

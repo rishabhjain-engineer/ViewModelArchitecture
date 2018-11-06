@@ -1,6 +1,10 @@
 package com.example.anupama.viewmodelarchitecture;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +15,7 @@ import com.example.anupama.viewmodelarchitecture.Database.Entity.FeedEntity;
 import com.example.anupama.viewmodelarchitecture.Network.ApiRequest;
 import com.example.anupama.viewmodelarchitecture.Network.ApiServices;
 import com.example.anupama.viewmodelarchitecture.Network.RetrofitInstance;
+import com.example.anupama.viewmodelarchitecture.ViewModel.FeedViewModel;
 import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
     private MainAdapter mMainAdapter;
     private List<FeedEntity> mFeedList = new ArrayList<>();
     private final String AUTH_TOKEN = "kbvNISE2swVMxWj29EnZhg";
+    public FeedViewModel mFeedViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +49,20 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
         mMainAdapter = new MainAdapter(mFeedList);
         mFeedRecyclerView.setAdapter(mMainAdapter);
 
+        mFeedViewModel = ViewModelProviders.of(MainActivity.this).get(FeedViewModel.class) ;
+
         getFeedApiResult();
         getNotificationApiResult();
+
+
+        mFeedViewModel.getAllFeeds().observe(this, new Observer<List<FeedEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<FeedEntity> feedEntities) {
+                Log.e("Rishabh","feedEntites size: "+feedEntities.size());
+                mFeedList.addAll(feedEntities);
+                mMainAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -79,12 +97,23 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
                     String likeCount = innerJsonObject.optString("like_count");
                     String viewCount = innerJsonObject.optString("view_count");
                     String userInfo = innerJsonObject.optString("user_info");
+                    JSONObject userInfoObject = new JSONObject(userInfo);
+                    String username = userInfoObject.optString("username");
                     String momentVideo = innerJsonObject.optString("video");
                     String momentImage = innerJsonObject.optString("image");
 
-                    Log.e("Rishabh","momentId: "+momentId);
-
+                    FeedEntity feedEntity = new FeedEntity();
+                    feedEntity.setMomentId(momentId);
+                    feedEntity.setMomentDescription(description);
+                    feedEntity.setMomentLocation(location);
+                    feedEntity.setMomentSportId(sportId);
+                    feedEntity.setComment_count(commentCount);
+                    feedEntity.setUsername(username);
+                    mFeedViewModel.insert(feedEntity);
                 }
+
+
+
             }
 
 
@@ -124,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
 
     @Override
     public void onNetworkError(String error) {
-
         Log.e("Rishabh","NetworkError: "+error);
     }
 }
