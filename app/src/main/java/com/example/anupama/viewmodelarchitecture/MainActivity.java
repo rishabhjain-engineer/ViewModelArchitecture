@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
             @Override
             public void onChanged(@Nullable List<FeedEntity> feedEntities) {
                 Log.e("Rishabh","feedEntites size: "+feedEntities.size());
+                mFeedList.clear();
                 mFeedList.addAll(feedEntities);
                 mMainAdapter.notifyDataSetChanged();
             }

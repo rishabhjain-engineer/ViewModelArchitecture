@@ -14,7 +14,7 @@ public class FeedEntity {
     }
 
     @PrimaryKey(autoGenerate = true)
-    int primarykey;
+    public int dbUniqueKey = 0;
 
     @ColumnInfo(name ="momentId")
     private String momentId ;
@@ -136,4 +136,9 @@ public class FeedEntity {
     public void setComment_count(String comment_count) {
         this.comment_count = comment_count;
     }
+
+    public int getDbUniqueKey(){
+        return dbUniqueKey ;
+    }
+
 }

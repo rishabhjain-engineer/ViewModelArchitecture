@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 
 import com.example.anupama.viewmodelarchitecture.Database.Entity.FeedEntity;
 import com.example.anupama.viewmodelarchitecture.Repository.FeedRepository;
@@ -16,7 +15,7 @@ public class FeedViewModel extends AndroidViewModel {
     private FeedRepository mRepository;
     private LiveData<List<FeedEntity>> mAllFeeds;
 
-    public FeedViewModel(@NonNull Application application) {
+    public FeedViewModel(Application application) {
         super(application);
         mRepository = new FeedRepository(application);
         mAllFeeds = mRepository.getAllFeeds();
