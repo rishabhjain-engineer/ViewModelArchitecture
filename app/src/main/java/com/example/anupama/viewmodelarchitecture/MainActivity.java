@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,17 +54,25 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
 
         mFeedViewModel = ViewModelProviders.of(MainActivity.this).get(FeedViewModel.class) ;
 
-        getFeedApiResult();
-        getNotificationApiResult();
+        //getFeedApiResult();
+        //getNotificationApiResult();
+        //mFeedViewModel.deleteAllEntries();
 
 
         mFeedViewModel.getAllFeeds().observe(this, new Observer<List<FeedEntity>>() {
             @Override
             public void onChanged(@Nullable List<FeedEntity> feedEntities) {
                 Log.e("Rishabh","feedEntites size: "+feedEntities.size());
-                mFeedList.clear();
-                mFeedList.addAll(feedEntities);
-                mMainAdapter.notifyDataSetChanged();
+
+                if(feedEntities.size() > 0){
+                    // Table is empty, insert the data.
+                    mFeedList.clear();
+                    mFeedList.addAll(feedEntities);
+                    mMainAdapter.notifyDataSetChanged();
+                }
+
+               mFeedViewModel.getDataCount("1015");
+
             }
         });
     }
@@ -110,10 +121,19 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
                     feedEntity.setMomentSportId(sportId);
                     feedEntity.setComment_count(commentCount);
                     feedEntity.setUsername(username);
-                    mFeedViewModel.insert(feedEntity);
+
+                    /*
+                    *
+                    * TODO: Before inserting data into table, check few things:
+                    * 1: Whether that particular data is in table or not.
+                    * 2. If not, insert
+                    * 3. We don't want to insert duplicate entries.
+                    *
+                    * TODO: Procedure get elements from database.
+                    * */
+
+                    //mFeedViewModel.insert(feedEntity);
                 }
-
-
 
             }
 

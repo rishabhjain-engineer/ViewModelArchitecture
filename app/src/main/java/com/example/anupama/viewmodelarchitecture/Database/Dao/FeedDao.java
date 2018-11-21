@@ -22,4 +22,7 @@ public interface FeedDao {
     @Query("SELECT * from feed_table")
     LiveData<List<FeedEntity>> getAllFeeds();
 
+    @Query("SELECT COUNT(momentId) AS mid FROM feed_table WHERE momentId = :mId")
+    String getParticularMomentId(String mId);
+
 }

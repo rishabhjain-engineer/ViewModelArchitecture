@@ -4,6 +4,7 @@ package com.example.anupama.viewmodelarchitecture.Database.Entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 @Entity(tableName ="feed_table")
 public class FeedEntity {
@@ -13,9 +14,8 @@ public class FeedEntity {
 
     }
 
-    @PrimaryKey(autoGenerate = true)
-    public int dbUniqueKey = 0;
-
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name ="momentId")
     private String momentId ;
 
@@ -53,7 +53,7 @@ public class FeedEntity {
         return momentId;
     }
 
-    public void setMomentId(String momentId) {
+    public void setMomentId(@NonNull String momentId) {
         this.momentId = momentId;
     }
 
@@ -135,10 +135,6 @@ public class FeedEntity {
 
     public void setComment_count(String comment_count) {
         this.comment_count = comment_count;
-    }
-
-    public int getDbUniqueKey(){
-        return dbUniqueKey ;
     }
 
 }

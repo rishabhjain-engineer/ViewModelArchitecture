@@ -33,4 +33,12 @@ public class FeedViewModel extends AndroidViewModel {
         mRepository.insert(FeedEntity);
     }
 
+    public void deleteAllEntries(){
+        mRepository.deleteAll();
+    }
+
+    public void getDataCount(String momentId){
+        mRepository.getDataEntryCount(momentId);
+    }
+
 }
