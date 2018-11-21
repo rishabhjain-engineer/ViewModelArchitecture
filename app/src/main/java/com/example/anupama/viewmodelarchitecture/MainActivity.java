@@ -1,12 +1,8 @@
 package com.example.anupama.viewmodelarchitecture;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
         mMainAdapter = new MainAdapter(mFeedList);
         mFeedRecyclerView.setAdapter(mMainAdapter);
 
-        mFeedViewModel = ViewModelProviders.of(MainActivity.this).get(FeedViewModel.class) ;
+        mFeedViewModel = ViewModelProviders.of(MainActivity.this).get(FeedViewModel.class);
 
-        //getFeedApiResult();
+        getFeedApiResult();
         //getNotificationApiResult();
         //mFeedViewModel.deleteAllEntries();
 
@@ -62,17 +58,12 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
         mFeedViewModel.getAllFeeds().observe(this, new Observer<List<FeedEntity>>() {
             @Override
             public void onChanged(@Nullable List<FeedEntity> feedEntities) {
-                Log.e("Rishabh","feedEntites size: "+feedEntities.size());
-
-                if(feedEntities.size() > 0){
-                    // Table is empty, insert the data.
-                    mFeedList.clear();
-                    mFeedList.addAll(feedEntities);
-                    mMainAdapter.notifyDataSetChanged();
-                }
-
-               mFeedViewModel.getDataCount("1015");
-
+                Log.e("Rishabh", "feedEntites size: " + feedEntities.size());
+                // Table is empty, insert the data.
+                mFeedList.clear();
+                mFeedList.addAll(feedEntities);
+                mMainAdapter.notifyDataSetChanged();
+                //mFeedViewModel.getDataCount("1015");
             }
         });
     }
@@ -98,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
         try {
             String moments = jsonObject.optString("moments");
             JSONArray jsonArray = new JSONArray(moments);
-            if(jsonArray.length()>0){
-                for(int i=0;i<jsonArray.length();i++){
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject innerJsonObject = jsonArray.optJSONObject(i);
                     String momentId = innerJsonObject.optString("id");
                     String description = innerJsonObject.optString("description");
@@ -122,17 +113,7 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
                     feedEntity.setComment_count(commentCount);
                     feedEntity.setUsername(username);
 
-                    /*
-                    *
-                    * TODO: Before inserting data into table, check few things:
-                    * 1: Whether that particular data is in table or not.
-                    * 2. If not, insert
-                    * 3. We don't want to insert duplicate entries.
-                    *
-                    * TODO: Procedure get elements from database.
-                    * */
-
-                    //mFeedViewModel.insert(feedEntity);
+                    mFeedViewModel.insert(feedEntity);
                 }
 
             }
@@ -140,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e("Rishabh","exception: "+e.toString());
+            Log.e("Rishabh", "exception: " + e.toString());
         }
 
     }
@@ -153,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
     @Override
     public void onNetworkSuccess(JSONObject jsonObject, String tag) {
 
-        Log.e("Rishabh","NetworkSuccess, tag: "+tag);
+        Log.e("Rishabh", "NetworkSuccess, tag: " + tag);
 
         switch (tag) {
 
@@ -174,6 +155,6 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
 
     @Override
     public void onNetworkError(String error) {
-        Log.e("Rishabh","NetworkError: "+error);
+        Log.e("Rishabh", "NetworkError: " + error);
     }
 }

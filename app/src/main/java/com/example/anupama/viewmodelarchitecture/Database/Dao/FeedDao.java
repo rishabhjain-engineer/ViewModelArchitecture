@@ -4,6 +4,7 @@ package com.example.anupama.viewmodelarchitecture.Database.Dao;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.example.anupama.viewmodelarchitecture.Database.Entity.FeedEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 @Dao
 public interface FeedDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(FeedEntity feedEntity);
 
     @Query("DELETE FROM feed_table")
@@ -21,8 +22,5 @@ public interface FeedDao {
 
     @Query("SELECT * from feed_table")
     LiveData<List<FeedEntity>> getAllFeeds();
-
-    @Query("SELECT COUNT(momentId) AS mid FROM feed_table WHERE momentId = :mId")
-    String getParticularMomentId(String mId);
 
 }
