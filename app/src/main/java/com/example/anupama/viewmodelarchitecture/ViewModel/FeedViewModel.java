@@ -14,6 +14,7 @@ public class FeedViewModel extends AndroidViewModel {
 
     private FeedRepository mRepository;
     private LiveData<List<FeedEntity>> mAllFeeds;
+    private LiveData<FeedEntity> feedEntityLiveData ;
 
     public FeedViewModel(Application application) {
         super(application);
@@ -21,12 +22,7 @@ public class FeedViewModel extends AndroidViewModel {
         mAllFeeds = mRepository.getAllFeeds();
     }
 
-    /*public FeedViewModel (Application application) {
-        super(application);
-        mRepository = new FeedRepository(application);
-        mAllFeeds = mRepository.getAllFeeds();
-    }
-*/
+
     public LiveData<List<FeedEntity>> getAllFeeds() { return mAllFeeds; }
 
     public void insert(FeedEntity FeedEntity) {
@@ -37,8 +33,8 @@ public class FeedViewModel extends AndroidViewModel {
         mRepository.deleteAll();
     }
 
-    public void getDataCount(String momentId){
-        mRepository.getDataEntryCount(momentId);
+    public LiveData<FeedEntity> getParticularMomentInfo(String momentId){
+        return mRepository.getParticularMomentInfo(momentId);
     }
 
 }

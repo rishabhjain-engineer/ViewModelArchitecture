@@ -2,10 +2,12 @@ package com.example.anupama.viewmodelarchitecture.Repository;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.anupama.viewmodelarchitecture.Database.AppDatabase;
@@ -18,8 +20,11 @@ public class FeedRepository {
 
     private FeedDao mFeedDao;
     private LiveData<List<FeedEntity>> mAllFeeds;
+    private LiveData<FeedEntity> feedEntityLiveData ;
+    private Application application;
 
     public FeedRepository(Application application) {
+        this.application =application;
         AppDatabase db = AppDatabase.getAppDatabase(application);
         mFeedDao = db.feedDao();
         mAllFeeds = mFeedDao.getAllFeeds();
@@ -68,28 +73,11 @@ public class FeedRepository {
     }
 
 
-    public void getDataEntryCount(String momentId){
-        new DataExist(mFeedDao).execute(momentId);
+    public LiveData<FeedEntity> getParticularMomentInfo(String momentId){
+         return mFeedDao.getMomentInfo(momentId);
     }
 
-    private static class DataExist extends AsyncTask<String,Void,Void>{
 
-        private FeedDao dataDao ;
-
-        public DataExist(FeedDao mFeedDao) {
-            dataDao = mFeedDao ;
-        }
-
-
-        @Override
-        protected Void doInBackground(String... strings) {
-
-            Log.e("Rishabh","data: "+strings[0]);
-            String a = dataDao.getParticularMomentId(strings[0]);
-            Log.e("Rishabh","a: "+a);
-            return null;
-        }
-    }
 
 
 }

@@ -6,6 +6,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.example.anupama.viewmodelarchitecture.Database.Entity.FeedEntity;
 
@@ -22,5 +23,9 @@ public interface FeedDao {
 
     @Query("SELECT * from feed_table")
     LiveData<List<FeedEntity>> getAllFeeds();
+
+    @Query("SELECT * from feed_table where momentId = :momentId")
+    LiveData<FeedEntity> getMomentInfo(String momentId);
+
 
 }

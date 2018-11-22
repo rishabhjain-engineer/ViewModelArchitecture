@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ApiRequest.Networ
         mFeedRecyclerView.setLayoutManager(mLayoutManager);
         mFeedRecyclerView.setHasFixedSize(true);
 
-        mMainAdapter = new MainAdapter(mFeedList);
+        mMainAdapter = new MainAdapter(mFeedList, MainActivity.this);
         mFeedRecyclerView.setAdapter(mMainAdapter);
 
         mFeedViewModel = ViewModelProviders.of(MainActivity.this).get(FeedViewModel.class);

@@ -1,5 +1,7 @@
 package com.example.anupama.viewmodelarchitecture.Adapter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.anupama.viewmodelarchitecture.Database.Entity.FeedEntity;
+import com.example.anupama.viewmodelarchitecture.DetailActivity;
+import com.example.anupama.viewmodelarchitecture.MainActivity;
 import com.example.anupama.viewmodelarchitecture.R;
 
 import java.util.List;
@@ -15,9 +19,11 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
     private List<FeedEntity> mFeedList ;
+    private Activity activity ;
 
-    public MainAdapter(List<FeedEntity> mFeedList){
+    public MainAdapter(List<FeedEntity> mFeedList, Activity activity){
         this.mFeedList = mFeedList ;
+        this.activity = activity ;
     }
 
     @NonNull
@@ -30,12 +36,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainViewHolder mainViewHolder, int i) {
+    public void onBindViewHolder(@NonNull MainViewHolder mainViewHolder, final int i) {
 
         mainViewHolder.textView1.setText(mFeedList.get(i).getMomentId());
         //mainViewHolder.textView2.setText(mFeedList.get(i).getUserfullname());
         mainViewHolder.textView3.setText(mFeedList.get(i).getUsername());
         //mainViewHolder.textView4.setText(mFeedList.get(i).getMomentUrl());
+
+        mainViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, DetailActivity.class);
+                intent.putExtra("momentId",mFeedList.get(i).getMomentId());
+                activity.startActivity(intent);
+            }
+        });
 
     }
 
