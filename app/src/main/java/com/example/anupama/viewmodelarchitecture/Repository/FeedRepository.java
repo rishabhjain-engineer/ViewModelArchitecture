@@ -77,7 +77,26 @@ public class FeedRepository {
          return mFeedDao.getMomentInfo(momentId);
     }
 
+    public void updateCommentCount(String momentId, String commentCount)
+    {
+        new UpdateCommentCount(mFeedDao,momentId,commentCount).execute();
+    }
 
+    public class UpdateCommentCount extends AsyncTask<Void,Void,Void>{
 
+        private FeedDao updateFeedDao ;
+        private String momentId, commentCount ;
 
+        public UpdateCommentCount(FeedDao mFeedDao, String momentId, String commentCount) {
+            updateFeedDao = mFeedDao ;
+            this.momentId = momentId;
+            this.commentCount = commentCount ;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            updateFeedDao.updateCommentCount(momentId,commentCount);
+            return null;
+        }
+    }
 }

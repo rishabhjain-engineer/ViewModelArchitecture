@@ -27,5 +27,7 @@ public interface FeedDao {
     @Query("SELECT * from feed_table where momentId = :momentId")
     LiveData<FeedEntity> getMomentInfo(String momentId);
 
+    @Query("UPDATE feed_table SET comment_count = :commentCount WHERE momentId = :momentId")
+    void updateCommentCount(String momentId, String commentCount);
 
 }
